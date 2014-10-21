@@ -17,7 +17,7 @@ module.exports = {
           "sass-loader?imagePath=./blocks"
         ]
       },
-      { test: /\.(png|svg)$/, loader: "url" }
+      { test: /\.(png|svg)$/, include: /card\/__suit/, loader: "url" }
     ]
   },
   plugins: [
