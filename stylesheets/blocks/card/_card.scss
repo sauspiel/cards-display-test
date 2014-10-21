@@ -1,0 +1,46 @@
+$card_width: 113px;
+$card_height: 170px;
+$card_radius: 7px;
+
+.card {
+  float: left;
+  // position: absolute;
+  background-position: 0 0;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  width: $card_width;
+  height: $card_height;
+  backface-visibility: hidden; // Puts the element into layer
+
+  // Outline
+  &_outline {
+    position: absolute;
+    width: $card_width;
+    height: $card_height;
+    // background: $highlight-color;
+    border-radius: $card_radius;
+    // box-shadow: 0 0 0 3px $highlight-color;
+    backface-visibility: hidden; // Puts the element into layer
+  }
+
+
+  // Disabled overlay
+  &:before {
+    position: absolute;
+    background-color: rgba(0,0,0,.5);
+    border-radius: $card_radius;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    content: "";
+  }
+  &_disabled:before {
+    opacity: 1;
+  }
+  // Selection
+  &_detached,
+  &_selected {
+    box-shadow: 0 0 6px 3px #fc0;
+    border-radius: $card_radius;
+  }
+}

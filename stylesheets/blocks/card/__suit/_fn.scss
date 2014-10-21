@@ -1,0 +1,8 @@
+@import "../../../scss_config";
+$deck: "fn";
+
+@each $suit in E, G, H, S {
+  @each $card in 7,8,9,U,O,K,X,A {
+    .deck_#{$deck} .card_#{$suit}#{$card} { background-image: image-url("card/__suit/#{$deck}/#{$suit}#{$card}_#{$deck}#{$card_extension}"); }
+  }
+}
