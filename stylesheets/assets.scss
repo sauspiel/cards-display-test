@@ -10,7 +10,7 @@
 }
 
 .deck_png {
-  $card_extension: ".png";
+  $card_extension: "@2x.png";
   @each $deck in "tn", "de", "fr", "by", "fn" {
     @each $suit in E, G, H, S {
       @each $card in 7,8,9,U,O,K,X,A {
