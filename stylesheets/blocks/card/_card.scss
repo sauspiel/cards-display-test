@@ -3,8 +3,7 @@ $card_height: 170px;
 $card_radius: 7px;
 
 .card {
-  float: left;
-  // position: absolute;
+  position: absolute;
   background-position: 0 0;
   background-repeat: no-repeat;
   background-size: 100% 100%;
