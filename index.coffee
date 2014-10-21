@@ -10,10 +10,12 @@ require.ensure [], () ->
     for deck in decks
       $deck = $("<div class='deck deck_#{deck}'>")
       for color in colors
+        $color = $("<div class='color'>")
         for card in cards
           cardID = color + card
           $cardEl = $("<div class='card card_#{cardID}'>")
-          $deck.append($cardEl)
+          $color.append($cardEl)
+        $deck.append($color)
       $('#container').append($deck)
 
     tick = ->
