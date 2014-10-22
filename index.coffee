@@ -17,27 +17,28 @@ require.ensure [], () ->
     cacheCards = ->
       deck = "tn"
       for color in colors
-        for card in cards
-          cardID = color + card
-          url = require("file!./stylesheets/blocks/imgs/#{deck}/#{cardID}_#{deck}.svg")
-          console.log url
-          img = new Image
-          img.onload = ->
-            canvas = document.createElement('canvas')
-            canvas.width = img.width
-            canvas.height = img.width
-            console.log canvas.width
-            console.log canvas.height
-            ctx = canvas.getContext("2d")
-            ctx.drawImage(img, 0, 0)
-            cache[cardID] = canvas.toDataURL()
-            console.log cache[cardID]
-            counter++
-            if counter >= 32
-              t2 = Date.now()
-              console.log "All loaded in #{t2-t1}ms"
+        do (color) ->
+          for card in cards
+            do (card) ->
+              cardID = color + card
+              url = require("file!./stylesheets/blocks/imgs/#{deck}/#{cardID}_#{deck}.svg")
+              console.log url
+              img = new Image
+              img.onload = ->
+                canvas = document.createElement('canvas')
+                canvas.width = img.width
+                canvas.height = img.height
+                console.log img.width, img.height
+                ctx = canvas.getContext("2d")
+                ctx.drawImage(img, 0, 0)
+                cache[cardID] = canvas.toDataURL()
+                console.log cache[cardID]
+                counter++
+                if counter >= 32
+                  t2 = Date.now()
+                  console.log "All loaded in #{t2-t1}ms"
 
-          img.src = url # Kick loading
+              img.src = url # Kick loading
 
     drawCards = ->
       count = 12
@@ -54,14 +55,14 @@ require.ensure [], () ->
         cardID = color + card
         switch useImgTag
           when 0
-            $cardEl = $("<div class='card card_#{cardID}'>")
-          when 1
             url = require("url!./stylesheets/blocks/imgs/#{deck}/#{cardID}_#{deck}#{ext}")
             $cardEl = $("<img class='card card_#{cardID}' src='#{url}'>")
+          when 1
+            $cardEl = $("<div class='card card_#{cardID}'>")
           when 2
             $cardEl = $("<div class='card'>")
             $cardEl.css
-              backgroundImage: cache[cardID]
+              backgroundImage: "url(#{cache[cardID]})"
 
         $cardEl.css
           'transform': "translate(#{i * 75}px, 0) rotate(#{-6 + Math.random() * 12}deg)"
