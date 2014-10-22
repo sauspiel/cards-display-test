@@ -39,6 +39,8 @@ require.ensure [], () ->
         cardID = color + card
         $cardEl = $("<div class='card card_#{cardID}'>")
         $cardEl.css
+          'width': 226
+          'height': 340
           'transform': "translate(#{i * 75}px, 0) rotate(#{-6 + Math.random() * 12}deg)"
           'zIndex': i+1
         $('#container').append($cardEl)
