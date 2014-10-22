@@ -9,12 +9,25 @@ require.ensure [], () ->
     decks = ["fr", "de", "tn", "by", "fn"]
     colors = "E,G,H,S".split(',')
     cards = "7,8,9,U,O,K,X,A".split(',')
+    deck = "tn"
+
+    $("#initial_cards").addClass("deck_#{deck}")
+    for color in colors
+      for card in cards
+        cardID = color + card
+        $card = $("<div class='card card_#{cardID}'>")
+        $("#initial_cards").append $card
+        # url = $card.css('background-image').replace('url("', '').replace('")', '')
+        # $("#initial_cards").append $("<object data='#{url}' type='image/svg+xml'>")
+    setTimeout (->
+      $("#initial_cards").html("")
+      console.log("cards removed")
+    ), 1000
 
     drawCards = ->
       count = 12
       ext = ".svg"
       # deck = decks[~~(Math.random() * decks.length)]
-      deck = "tn"
       $('#container').html('')
       $('#container').attr('class', '')
       $('#duplicates').attr('class', '')
@@ -31,8 +44,6 @@ require.ensure [], () ->
           'transform': "translate(#{i * 75}px, 0) rotate(#{-6 + Math.random() * 12}deg)"
           'zIndex': i+1
         $('#container').append($cardEl)
-        url = $cardEl.css('background-image').replace('url("', '').replace('")', '')
-        $("#tests").append $("<object data='#{url}' type='image/svg+xml'>")
 
     drawCards()
 
