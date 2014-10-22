@@ -15,10 +15,9 @@ require.ensure [], () ->
     for color in colors
       for card in cards
         cardID = color + card
-        $card = $("<div class='card card_#{cardID}'>")
+        $card = $("<div class='card card_#{cardID}' style='display:none;'>")
         $("#initial_cards").append $card
-        # url = $card.css('background-image').replace('url("', '').replace('")', '')
-        # $("#initial_cards").append $("<object data='#{url}' type='image/svg+xml'>")
+
     setTimeout (->
       $("#initial_cards").html("")
       console.log("cards removed")
