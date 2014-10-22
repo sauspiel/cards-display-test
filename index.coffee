@@ -3,13 +3,41 @@ require './stylesheets/styles.scss'
 require.ensure [], () ->
   require './stylesheets/assets.scss'
 
+
   $ ->
+    cache = {} # Key/value storage for cards
     interval = null
     useSVGs = yes
-    useImgTag = no
+    useImgTag = 0
     decks = ["fr", "de", "tn", "by", "fn"]
     colors = "E,G,H,S".split(',')
     cards = "7,8,9,U,O,K,X,A".split(',')
+    counter = 0
+
+    cacheCards = ->
+      deck = "tn"
+      for color in colors
+        for card in cards
+          cardID = color + card
+          url = require("file!./stylesheets/blocks/imgs/#{deck}/#{cardID}_#{deck}.svg")
+          console.log url
+          img = new Image
+          img.onload = ->
+            canvas = document.createElement('canvas')
+            canvas.width = img.width
+            canvas.height = img.width
+            console.log canvas.width
+            console.log canvas.height
+            ctx = canvas.getContext("2d")
+            ctx.drawImage(img, 0, 0)
+            cache[cardID] = canvas.toDataURL()
+            console.log cache[cardID]
+            counter++
+            if counter >= 32
+              t2 = Date.now()
+              console.log "All loaded in #{t2-t1}ms"
+
+          img.src = url # Kick loading
 
     drawCards = ->
       count = 12
@@ -24,15 +52,25 @@ require.ensure [], () ->
         color = colors[~~(Math.random() * colors.length)]
         card = cards[~~(Math.random() * cards.length)]
         cardID = color + card
-        if useImgTag
-          url = require("url!./stylesheets/blocks/imgs/#{deck}/#{cardID}_#{deck}#{ext}")
-          $cardEl = $("<img class='card card_#{cardID}' src='#{url}'>")
-        else
-          $cardEl = $("<div class='card card_#{cardID}'>")
+        switch useImgTag
+          when 0
+            $cardEl = $("<div class='card card_#{cardID}'>")
+          when 1
+            url = require("url!./stylesheets/blocks/imgs/#{deck}/#{cardID}_#{deck}#{ext}")
+            $cardEl = $("<img class='card card_#{cardID}' src='#{url}'>")
+          when 2
+            $cardEl = $("<div class='card'>")
+            $cardEl.css
+              backgroundImage: cache[cardID]
+
         $cardEl.css
           'transform': "translate(#{i * 75}px, 0) rotate(#{-6 + Math.random() * 12}deg)"
           'zIndex': i+1
         $('#container').append($cardEl)
+
+    t1 = Date.now()
+    console.log "Started caching"
+    cacheCards()
 
     drawCards()
 
@@ -55,11 +93,15 @@ require.ensure [], () ->
       drawCards()
 
     toggleMethod = ->
-      useImgTag = not useImgTag
-      if useImgTag
-        $('.btn-method').text('IMG')
-      else
-        $('.btn-method').text('DIV')
+      useImgTag = if useImgTag >= 2 then 0 else useImgTag + 1
+      switch useImgTag
+        when 0
+          $('.btn-method').text('IMG')
+        when 1
+          $('.btn-method').text('DIV')
+        when 2
+          $('.btn-method').text('Cache')
+
       drawCards()
 
     $('.btn-pngs-svgs').on "click", toggleViews
