@@ -20,6 +20,7 @@ require.ensure [], () ->
       $('#duplicates').attr('class', '')
       $('#container').addClass("deck_#{deck}")
       $('#duplicates').addClass("deck_#{deck}")
+      $('#tests').html('')
 
       for i in [0...count]
         color = colors[~~(Math.random() * colors.length)]
@@ -30,6 +31,8 @@ require.ensure [], () ->
           'transform': "translate(#{i * 75}px, 0) rotate(#{-6 + Math.random() * 12}deg)"
           'zIndex': i+1
         $('#container').append($cardEl)
+        url = $cardEl.css('background-image').replace('url("', '').replace('")', '')
+        $("#tests").append $("<object data='#{url}' type='image/svg+xml'>")
 
     drawCards()
 
