@@ -3,3 +3,14 @@
 // #container {
 //   transform: scale(0.5);
 // }
+#container,
+#duplicates {
+  height: 200px;
+}
+#duplicates {
+  border: 1px solid red;
+
+  .card {
+    border: 1px solid green;
+  }
+}

@@ -9,7 +9,7 @@ $card_radius: 7px;
   background-size: 100% 100%;
   width: $card_width;
   height: $card_height;
-  backface-visibility: hidden; // Puts the element into layer
+  /* backface-visibility: hidden; */ // Puts the element into layer
 
   // Outline
   &_outline {
@@ -19,7 +19,7 @@ $card_radius: 7px;
     // background: $highlight-color;
     border-radius: $card_radius;
     // box-shadow: 0 0 0 3px $highlight-color;
-    backface-visibility: hidden; // Puts the element into layer
+    /* backface-visibility: hidden; */ // Puts the element into layer
   }
 
 
