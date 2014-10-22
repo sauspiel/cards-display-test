@@ -15,7 +15,7 @@ require.ensure [], () ->
     for color in colors
       for card in cards
         cardID = color + card
-        $card = $("<div class='card_#{cardID}' style='display:none; width:1px; height:1px;'>")
+        $card = $("<div class='card_#{cardID}' style='display:none; width:0px; height:0px;'>")
         $("#initial_cards").append $card
 
     setTimeout (->
