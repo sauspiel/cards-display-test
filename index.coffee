@@ -15,12 +15,11 @@ require.ensure [], () ->
     for color in colors
       for card in cards
         cardID = color + card
-        $card = $("<div class='card card_#{cardID}' style='display:none;'>")
+        $card = $("<div class='card_#{cardID}' style='display:none; width:1px; height:1px;'>")
         $("#initial_cards").append $card
 
     setTimeout (->
-      $("#initial_cards").html("")
-      console.log("cards removed")
+      $("#initial_cards").remove()
     ), 1000
 
     drawCards = ->
