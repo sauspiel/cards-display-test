@@ -10,35 +10,48 @@ require.ensure [], () ->
     useSVGs = yes
     useImgTag = 0
     decks = ["fr", "de", "tn", "by", "fn"]
-    colors = "E,G,H,S".split(',')
-    cards = "7,8,9,U,O,K,X,A".split(',')
+    colors = "E".split(',')
+    cards = "7".split(',')
     counter = 0
 
     cacheCards = ->
       deck = "tn"
+      canvas = document.createElement('canvas')
       for color in colors
         do (color) ->
           for card in cards
             do (card) ->
               cardID = color + card
               url = require("file!./stylesheets/blocks/imgs/#{deck}/#{cardID}_#{deck}.svg")
-              console.log url
               img = new Image
+              img.crossOrigin = "anonymous"
+              img.width = 113
+              img.height = 170
               img.onload = ->
-                canvas = document.createElement('canvas')
-                canvas.width = img.width
-                canvas.height = img.height
-                console.log img.width, img.height
-                ctx = canvas.getContext("2d")
-                ctx.drawImage(img, 0, 0)
-                cache[cardID] = canvas.toDataURL()
-                console.log cache[cardID]
-                counter++
-                if counter >= 32
-                  t2 = Date.now()
-                  console.log "All loaded in #{t2-t1}ms"
-
+                $('body').append $(img)
+                setTimeout (-> onCardLoaded(canvas, img, cardID)), 1
               img.src = url # Kick loading
+
+    onCardLoaded = (canvas, img, cardID) ->
+      canvas.width = img.width
+      canvas.height = img.height
+      # canvas.width = 113
+      # canvas.height = 170
+      console.log canvas.width, canvas.height
+      ctx = canvas.getContext("2d")
+      try
+        ctx.drawImage(img, 0, 0)
+      catch e
+        window.setTimeout ->
+          onCardLoaded(canvas, img, cardID)
+        , 0
+
+      cache[cardID] = canvas.toDataURL("image/png")
+      console.log cache[cardID]
+      counter++
+      if counter >= 32
+        t2 = Date.now()
+        console.log "All loaded in #{t2-t1}ms"
 
     drawCards = ->
       count = 12
@@ -55,8 +68,8 @@ require.ensure [], () ->
         cardID = color + card
         switch useImgTag
           when 0
-            url = require("url!./stylesheets/blocks/imgs/#{deck}/#{cardID}_#{deck}#{ext}")
-            $cardEl = $("<img class='card card_#{cardID}' src='#{url}'>")
+            url = require("file!./stylesheets/blocks/imgs/#{deck}/#{cardID}_#{deck}#{ext}")
+            $cardEl = $("<img class='card' src='#{url}'>")
           when 1
             $cardEl = $("<div class='card card_#{cardID}'>")
           when 2
