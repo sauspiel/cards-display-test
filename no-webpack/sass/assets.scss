@@ -1,0 +1,5 @@
+@each $suit in E, G, H, S {
+  @each $card in 7,8,9,U,O,K,X,A {
+    .deck_tn .card_#{$suit}#{$card} { background-image: image-url("#{$suit}#{$card}_tn.svg"); }
+  }
+}
